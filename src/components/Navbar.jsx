@@ -13,7 +13,7 @@ function Navbar() {
       <div className="navbar__inner">
         <div className="brand">
           <h1 className="brand__title">StreamList</h1>
-          <p className="brand__subtitle">React Router navigation project</p>
+          <p className="brand__subtitle">Final StreamList capstone project</p>
         </div>
 
         <nav className="nav-links" aria-label="Main navigation">

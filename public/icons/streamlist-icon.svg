@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">StreamList app icon</title>
+  <desc id="desc">A blue StreamList badge with a play symbol and checklist lines.</desc>
+  <rect width="512" height="512" rx="108" fill="#2563eb" />
+  <rect x="76" y="98" width="360" height="316" rx="48" fill="#ffffff" />
+  <path d="M206 184v144l118-72-118-72Z" fill="#2563eb" />
+  <rect x="126" y="132" width="260" height="22" rx="11" fill="#dbeafe" />
+  <rect x="126" y="358" width="116" height="18" rx="9" fill="#93c5fd" />
+  <rect x="262" y="358" width="124" height="18" rx="9" fill="#93c5fd" />
+</svg>

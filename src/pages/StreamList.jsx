@@ -7,6 +7,7 @@ import {
   normalizeTitle,
   saveStreamEntries,
 } from '../streamListUtils.js';
+import { getBrowserStorage } from '../browserStorage.js';
 
 const initialEntries = [
   createStreamEntry('Stranger Things', 1),
@@ -29,14 +30,6 @@ const icons = {
 
 const FILTER_STORAGE_KEY = 'streamlist_filter';
 const TITLE_DRAFT_STORAGE_KEY = 'streamlist_title_draft';
-
-function getBrowserStorage() {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  return window.localStorage;
-}
 
 function loadStoredString(key, fallbackValue) {
   const storage = getBrowserStorage();

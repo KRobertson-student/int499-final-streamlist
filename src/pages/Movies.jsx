@@ -5,6 +5,7 @@ import {
   mapTmdbMovieResult,
   normalizeMovieSearchTerm,
 } from '../streamListUtils.js';
+import { getBrowserStorage } from '../browserStorage.js';
 
 const MOVIE_SEARCH_STORAGE_KEY = 'streamlist_movie_search';
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '';
@@ -15,14 +16,6 @@ const defaultMovieState = {
   selectedMovieId: null,
   recentSearches: [],
 };
-
-function getBrowserStorage() {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  return window.localStorage;
-}
 
 function isMovieResult(value) {
   return (
@@ -272,7 +265,7 @@ function Movies() {
                           <img src={movie.posterUrl} alt="" loading="lazy" />
                         ) : (
                           <span
-                            className="material-symbols-rounded poster-placeholder"
+                            className="material-symbols-rounded poster-empty-icon"
                             aria-hidden="true"
                           >
                             movie

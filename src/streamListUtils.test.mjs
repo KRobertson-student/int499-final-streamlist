@@ -21,6 +21,8 @@ import {
   subscriptionWarning,
   updateCartQuantity,
 } from './cartLogic.js';
+import { getBrowserStorage } from './browserStorage.js';
+import { registerServiceWorker } from './registerServiceWorker.js';
 
 function createMemoryStorage(initialValues = {}) {
   const values = new Map(Object.entries(initialValues));
@@ -151,6 +153,45 @@ test('saveStreamEntries stores entries as JSON for refresh persistence', () => {
   saveStreamEntries(storage, entries);
 
   assert.equal(storage.getItem('streamlist_entries'), JSON.stringify(entries));
+});
+
+test('getBrowserStorage returns null when localStorage access is blocked', () => {
+  const blockedWindow = {};
+
+  Object.defineProperty(blockedWindow, 'localStorage', {
+    get() {
+      throw new Error('localStorage blocked');
+    },
+  });
+
+  assert.equal(getBrowserStorage(blockedWindow), null);
+});
+
+test('registerServiceWorker registers the app service worker when supported', async () => {
+  const calls = [];
+  const browserWindow = {
+    addEventListener(eventName, callback) {
+      calls.push(eventName);
+      callback();
+    },
+    navigator: {
+      serviceWorker: {
+        register(scriptUrl) {
+          calls.push(scriptUrl);
+          return Promise.resolve({ scope: '/' });
+        },
+      },
+    },
+  };
+
+  assert.equal(registerServiceWorker(browserWindow), true);
+  await Promise.resolve();
+  assert.deepEqual(calls, ['load', '/service-worker.js']);
+});
+
+test('registerServiceWorker skips unsupported browser contexts', () => {
+  assert.equal(registerServiceWorker({ navigator: {} }), false);
+  assert.equal(registerServiceWorker(null), false);
 });
 
 test('buildTmdbSearchUrl encodes the search term and API key', () => {

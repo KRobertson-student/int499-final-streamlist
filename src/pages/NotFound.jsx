@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 function NotFound() {
   return (
-    <section className="placeholder-page not-found">
-      <div className="panel placeholder-panel">
+    <section className="route-message not-found">
+      <div className="panel route-message__panel">
         <p className="eyebrow">Route Not Found</p>
         <h2 className="page-title">Page unavailable</h2>
         <p className="page-copy">

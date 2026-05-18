@@ -8,20 +8,13 @@ import {
   saveCartItems,
   updateCartQuantity,
 } from '../cartLogic.js';
+import { getBrowserStorage } from '../browserStorage.js';
 import products from '../cartProducts.js';
 
 const money = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
-
-function getBrowserStorage() {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  return window.localStorage;
-}
 
 function ProductSection({
   title,

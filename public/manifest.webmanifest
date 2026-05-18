@@ -1,0 +1,32 @@
+{
+  "name": "Final StreamList",
+  "short_name": "StreamList",
+  "description": "A React PWA for managing a personal streaming list, TMDB movie searches, and an EZTechMovie cart.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f6f8",
+  "theme_color": "#2563eb",
+  "categories": ["entertainment", "productivity", "shopping"],
+  "icons": [
+    {
+      "src": "/icons/streamlist-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/streamlist-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/streamlist-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

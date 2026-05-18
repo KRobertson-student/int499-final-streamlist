@@ -143,7 +143,10 @@ ul {
 }
 
 .streamlist-page,
-.placeholder-page {
+.movies-page,
+.cart-page,
+.about-page,
+.route-message {
   display: grid;
   gap: 1rem;
 }
@@ -451,11 +454,6 @@ ul {
   color: var(--warning);
 }
 
-.cart-page {
-  display: grid;
-  gap: 1rem;
-}
-
 .cart-intro-panel,
 .cart-product-section,
 .cart-review-panel {
@@ -615,13 +613,8 @@ ul {
   font-weight: 800;
 }
 
-.placeholder-page {
+.route-message {
   min-height: 40vh;
-}
-
-.movies-page {
-  display: grid;
-  gap: 1rem;
 }
 
 .movie-form {
@@ -720,7 +713,7 @@ ul {
   object-fit: cover;
 }
 
-.poster-placeholder {
+.poster-empty-icon {
   color: var(--muted);
   font-size: 1.5rem;
 }
@@ -755,12 +748,83 @@ ul {
   font-size: 0.82rem;
 }
 
-.placeholder-panel,
+.about-hero .page-title {
+  max-width: 22ch;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.about-card {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.about-card__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.about-card__icon .material-symbols-rounded {
+  font-size: 1.35rem;
+}
+
+.about-card h3 {
+  color: var(--ink);
+  font-size: 1.08rem;
+  line-height: 1.25;
+}
+
+.about-card p {
+  margin-top: 0.35rem;
+  color: var(--muted);
+}
+
+.about-details {
+  display: grid;
+  gap: 1rem;
+}
+
+.detail-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.detail-list li {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: start;
+  color: var(--muted);
+}
+
+.detail-list .material-symbols-rounded {
+  color: var(--success);
+  font-size: 1.15rem;
+  transform: translateY(0.15rem);
+}
+
+.route-message__panel,
 .not-found {
   max-width: 720px;
 }
 
-.placeholder-panel .page-title,
+.route-message__panel .page-title,
 .not-found .page-title {
   font-size: clamp(1.7rem, 4vw, 2.2rem);
 }
@@ -827,6 +891,10 @@ ul {
   }
 
   .movie-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .about-grid {
     grid-template-columns: 1fr;
   }
 

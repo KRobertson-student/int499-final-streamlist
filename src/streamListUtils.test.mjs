@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import {
   addRecentMovieSearch,
@@ -170,6 +171,9 @@ test('getBrowserStorage returns null when localStorage access is blocked', () =>
 test('registerServiceWorker registers the app service worker when supported', async () => {
   const calls = [];
   const browserWindow = {
+    location: {
+      href: 'https://example.com/int499-final-streamlist/#/movies',
+    },
     addEventListener(eventName, callback) {
       calls.push(eventName);
       callback();
@@ -186,12 +190,34 @@ test('registerServiceWorker registers the app service worker when supported', as
 
   assert.equal(registerServiceWorker(browserWindow), true);
   await Promise.resolve();
-  assert.deepEqual(calls, ['load', '/service-worker.js']);
+  assert.deepEqual(calls, ['load', 'service-worker.js']);
 });
 
 test('registerServiceWorker skips unsupported browser contexts', () => {
   assert.equal(registerServiceWorker({ navigator: {} }), false);
   assert.equal(registerServiceWorker(null), false);
+});
+
+test('PWA asset references avoid root-only paths for project-page deployments', () => {
+  const serviceWorkerSource = readFileSync(
+    new URL('../public/service-worker.js', import.meta.url),
+    'utf8',
+  );
+  const manifest = JSON.parse(
+    readFileSync(
+      new URL('../public/manifest.webmanifest', import.meta.url),
+      'utf8',
+    ),
+  );
+  const rootOnlyServiceWorkerPaths =
+    serviceWorkerSource.match(/'\/(?:index\.html|manifest\.webmanifest|icons\/)/g) ||
+    [];
+
+  assert.deepEqual(rootOnlyServiceWorkerPaths, []);
+  assert.equal(
+    manifest.icons.every((icon) => icon.src.startsWith('./icons/')),
+    true,
+  );
 });
 
 test('buildTmdbSearchUrl encodes the search term and API key', () => {

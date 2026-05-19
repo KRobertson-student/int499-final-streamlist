@@ -8,7 +8,7 @@ export function registerServiceWorker(browserWindow = globalThis.window) {
 
   browserWindow.addEventListener('load', () => {
     browserWindow.navigator.serviceWorker
-      .register('/service-worker.js')
+      .register('service-worker.js')
       .catch(() => {
         // Registration can fail in restricted browsers or non-HTTPS previews.
       });

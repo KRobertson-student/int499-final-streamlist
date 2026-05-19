@@ -1,11 +1,13 @@
 const CACHE_NAME = 'streamlist-final-v1';
+const APP_BASE_URL = new URL('./', self.location.href);
+const INDEX_URL = new URL('index.html', APP_BASE_URL).href;
 const APP_SHELL_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/icons/streamlist-icon-192.png',
-  '/icons/streamlist-icon-512.png',
-  '/icons/streamlist-icon.svg',
+  APP_BASE_URL.href,
+  INDEX_URL,
+  new URL('manifest.webmanifest', APP_BASE_URL).href,
+  new URL('icons/streamlist-icon-192.png', APP_BASE_URL).href,
+  new URL('icons/streamlist-icon-512.png', APP_BASE_URL).href,
+  new URL('icons/streamlist-icon.svg', APP_BASE_URL).href,
 ];
 
 self.addEventListener('install', (event) => {
@@ -47,10 +49,10 @@ self.addEventListener('fetch', (event) => {
           const responseCopy = response.clone();
           caches
             .open(CACHE_NAME)
-            .then((cache) => cache.put('/index.html', responseCopy));
+            .then((cache) => cache.put(INDEX_URL, responseCopy));
           return response;
         })
-        .catch(() => caches.match('/index.html')),
+        .catch(() => caches.match(INDEX_URL)),
     );
     return;
   }

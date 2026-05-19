@@ -14,10 +14,12 @@ Final StreamList is a routed React PWA that combines the StreamList watchlist, T
 
 ## Application Routes
 
-- `/` - StreamList homepage for managing movies and shows
-- `/movies` - TMDB movie search and result detail review
-- `/cart` - EZTechMovie product catalog, cart controls, and total summary
-- `/about` - Final project overview, PWA notes, and local-first data explanation
+The app uses React Router's `HashRouter`, so browser URLs include `#/`:
+
+- `/#/` - StreamList homepage for managing movies and shows
+- `/#/movies` - TMDB movie search and result detail review
+- `/#/cart` - EZTechMovie product catalog, cart controls, and total summary
+- `/#/about` - Final project overview, PWA notes, and local-first data explanation
 
 ## Assignment Coverage
 
@@ -79,6 +81,12 @@ Start the development server:
 ```bash
 npm run dev
 ```
+
+Open the app in a browser after the dev server starts:
+
+[http://localhost:5173/](http://localhost:5173/)
+
+If Vite shows a different local URL in the terminal, use that URL instead.
 
 Run tests:
 

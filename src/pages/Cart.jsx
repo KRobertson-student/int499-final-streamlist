@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   addItemToCart,
   calculateCartTotal,
@@ -143,8 +144,16 @@ function CartReview({ cart, cartTotal, onQuantityChange, onRemoveItem }) {
           </div>
 
           <footer className="cart-summary">
-            <span>Total</span>
-            <strong>{money.format(cartTotal)}</strong>
+            <div>
+              <span>Total</span>
+              <strong>{money.format(cartTotal)}</strong>
+            </div>
+            <Link className="btn btn--primary checkout-action" to="/cards">
+              <span className="material-symbols-rounded" aria-hidden="true">
+                lock
+              </span>
+              Checkout
+            </Link>
           </footer>
         </>
       ) : (

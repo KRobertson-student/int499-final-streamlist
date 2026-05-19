@@ -22,6 +22,24 @@ import {
   subscriptionWarning,
   updateCartQuantity,
 } from './cartLogic.js';
+import {
+  AUTH_STORAGE_KEY,
+  clearAuthSession,
+  createDemoUser,
+  decodeGoogleCredential,
+  loadAuthSession,
+  saveAuthSession,
+} from './authLogic.js';
+import {
+  CARD_STORAGE_KEY,
+  createCreditCard,
+  formatCardNumber,
+  loadCreditCards,
+  maskCardNumber,
+  removeCreditCard,
+  saveCreditCards,
+  validateCreditCardForm,
+} from './creditCardLogic.js';
 import { getBrowserStorage } from './browserStorage.js';
 import { registerServiceWorker } from './registerServiceWorker.js';
 
@@ -35,7 +53,20 @@ function createMemoryStorage(initialValues = {}) {
     setItem(key, value) {
       values.set(key, value);
     },
+    removeItem(key) {
+      values.delete(key);
+    },
   };
+}
+
+function createJwt(payload) {
+  const encodedHeader = Buffer.from(JSON.stringify({ alg: 'none' }))
+    .toString('base64url');
+  const encodedPayload = Buffer.from(JSON.stringify(payload)).toString(
+    'base64url',
+  );
+
+  return `${encodedHeader}.${encodedPayload}.signature`;
 }
 
 const basicSubscription = {
@@ -358,4 +389,135 @@ test('saveCartItems stores cart data and reports success', () => {
 
   assert.equal(saveCartItems(storage, cart), true);
   assert.equal(storage.getItem('streamlist_cart'), JSON.stringify(cart));
+});
+
+test('decodeGoogleCredential creates an authenticated Google session', () => {
+  const credential = createJwt({
+    sub: 'google-user-123',
+    name: 'K Robertson',
+    email: 'krobertson@example.com',
+    picture: 'https://example.com/avatar.png',
+  });
+  const session = decodeGoogleCredential(
+    credential,
+    new Date('2026-05-19T10:00:00.000Z'),
+  );
+
+  assert.deepEqual(session, {
+    id: 'google-user-123',
+    name: 'K Robertson',
+    email: 'krobertson@example.com',
+    picture: 'https://example.com/avatar.png',
+    provider: 'google',
+    signedInAt: '2026-05-19T10:00:00.000Z',
+  });
+});
+
+test('auth session helpers save, load, and clear the current user', () => {
+  const storage = createMemoryStorage();
+  const session = createDemoUser(new Date('2026-05-19T11:00:00.000Z'));
+
+  assert.equal(saveAuthSession(storage, session), true);
+  assert.deepEqual(loadAuthSession(storage), session);
+
+  clearAuthSession(storage);
+
+  assert.equal(storage.getItem(AUTH_STORAGE_KEY), null);
+});
+
+test('formatCardNumber groups digits in four digit blocks', () => {
+  assert.equal(
+    formatCardNumber('1234567890123456'),
+    '1234 5678 9012 3456',
+  );
+  assert.equal(
+    formatCardNumber('1234-5678-9012-34567890'),
+    '1234 5678 9012 3456',
+  );
+});
+
+test('validateCreditCardForm requires a cardholder and 16 digit card number', () => {
+  assert.deepEqual(
+    validateCreditCardForm({
+      cardholder: '',
+      cardNumber: '1234 5678 9012',
+      expiration: '1/2',
+      nickname: '',
+    }),
+    {
+      cardholder: 'Enter the cardholder name.',
+      cardNumber: 'Enter a 16 digit card number.',
+      expiration: 'Use MM/YY for the expiration date.',
+    },
+  );
+});
+
+test('createCreditCard stores a masked card reference for localStorage', () => {
+  const card = createCreditCard(
+    {
+      cardholder: 'K Robertson',
+      cardNumber: '1234567890123456',
+      expiration: '12/29',
+      nickname: 'Project card',
+    },
+    'card-1',
+    new Date('2026-05-19T12:00:00.000Z'),
+  );
+
+  assert.deepEqual(card, {
+    id: 'card-1',
+    cardholder: 'K Robertson',
+    maskedNumber: '**** **** **** 3456',
+    lastFour: '3456',
+    expiration: '12/29',
+    nickname: 'Project card',
+    createdAt: '2026-05-19T12:00:00.000Z',
+  });
+  assert.equal(maskCardNumber('1234 5678 9012 3456'), '**** **** **** 3456');
+});
+
+test('credit card storage restores valid saved card references', () => {
+  const savedCards = [
+    {
+      id: 'card-1',
+      cardholder: 'K Robertson',
+      maskedNumber: '**** **** **** 3456',
+      lastFour: '3456',
+      expiration: '12/29',
+      nickname: 'Project card',
+      createdAt: '2026-05-19T12:00:00.000Z',
+    },
+  ];
+  const storage = createMemoryStorage({
+    [CARD_STORAGE_KEY]: JSON.stringify(savedCards),
+  });
+
+  assert.deepEqual(loadCreditCards(storage), savedCards);
+  assert.equal(saveCreditCards(storage, savedCards), true);
+  assert.equal(storage.getItem(CARD_STORAGE_KEY), JSON.stringify(savedCards));
+});
+
+test('removeCreditCard removes only the selected saved card', () => {
+  const cards = [
+    {
+      id: 'card-1',
+      cardholder: 'K Robertson',
+      maskedNumber: '**** **** **** 3456',
+      lastFour: '3456',
+      expiration: '12/29',
+      nickname: 'Project card',
+      createdAt: '2026-05-19T12:00:00.000Z',
+    },
+    {
+      id: 'card-2',
+      cardholder: 'K Robertson',
+      maskedNumber: '**** **** **** 1111',
+      lastFour: '1111',
+      expiration: '10/28',
+      nickname: 'Backup card',
+      createdAt: '2026-05-19T12:15:00.000Z',
+    },
+  ];
+
+  assert.deepEqual(removeCreditCard(cards, 'card-1'), [cards[1]]);
 });

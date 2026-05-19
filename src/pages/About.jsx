@@ -18,6 +18,18 @@ const featureHighlights = [
       'Compare subscription plans, add accessories, manage quantities, and review cart totals.',
   },
   {
+    icon: 'shield_lock',
+    title: 'OAuth Protected Access',
+    description:
+      'Routes users through Google-ready authentication before opening the main application.',
+  },
+  {
+    icon: 'credit_card',
+    title: 'Card Management',
+    description:
+      'Supports checkout card entry, validation, masked saved cards, deletion, and localStorage persistence.',
+  },
+  {
     icon: 'install_desktop',
     title: 'PWA Ready',
     description:
@@ -26,9 +38,10 @@ const featureHighlights = [
 ];
 
 const projectDetails = [
-  'React Router separates the StreamList, Movies, Cart, and About workflows.',
-  'Local browser storage keeps StreamList entries, movie searches, and cart items available between visits.',
-  'Pure utility modules cover title cleanup, TMDB formatting, cart math, storage loading, and service-worker registration.',
+  'React Router separates the Login, StreamList, Movies, Cart, Cards, and About workflows.',
+  'Protected routes redirect unauthenticated users to the login screen before the system interface opens.',
+  'Local browser storage keeps StreamList entries, movie searches, cart items, auth sessions, and saved card references available between visits.',
+  'Pure utility modules cover title cleanup, TMDB formatting, cart math, card validation, auth sessions, storage loading, and service-worker registration.',
   'The production build ships static PWA assets from the Vite public folder.',
 ];
 
@@ -40,9 +53,10 @@ function About() {
         <h2 className="page-title">StreamList is complete and PWA-ready.</h2>
         <p className="page-copy">
           This capstone combines the StreamList watchlist, TMDB movie search,
-          and EZTechMovie cart into one installable React application. It is
-          designed around user events, persistent state, routed workflows, and
-          progressive web app support.
+          EZTechMovie cart, OAuth-ready login, and credit card management into
+          one installable React application. It is designed around user events,
+          persistent state, routed workflows, protected access, and progressive
+          web app support.
         </p>
       </article>
 
@@ -86,9 +100,10 @@ function About() {
 
         <p className="page-copy cart-section-copy">
           StreamList stores app data in the browser on the current device. TMDB
-          search requests use the configured API key for movie results, while the
-          cart remains a local demonstration workflow and does not process
-          payments or collect checkout information.
+          search requests use the configured API key for movie results, while
+          authentication sessions and masked card references stay in
+          localStorage for the assignment demo. The cart and card manager do not
+          process real payments.
         </p>
       </article>
     </section>

@@ -2,6 +2,10 @@
 
 Final StreamList is a routed React PWA that combines the StreamList watchlist, TMDB movie search, and EZTechMovie cart assignments into one capstone application.
 
+## Open the Application
+
+[Open Final StreamList in your browser](https://krobertson-student.github.io/int499-final-streamlist/#/)
+
 ## Final Features
 
 - StreamList manager with add, edit, delete, complete, filter, draft saving, duplicate prevention, and localStorage persistence
@@ -86,7 +90,9 @@ npm run dev
 
 Open the app in a browser after the dev server starts:
 
-[http://localhost:5173/](http://localhost:5173/)
+```text
+http://localhost:5173/
+```
 
 If Vite shows a different local URL in the terminal, use that URL instead.
 

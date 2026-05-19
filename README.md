@@ -64,6 +64,8 @@ docs/
 
 ## Run Locally
 
+Use Node.js `20.19+` or `22.12+` before installing dependencies.
+
 Install dependencies:
 
 ```bash
